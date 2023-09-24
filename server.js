@@ -161,8 +161,7 @@ app.get("/api/users/:id", async (req, res) => {
 });
 
 
-
-// ********************* CRUD OPERATION ON POST******************
+// ********************* CRUD OPERATION ON POST***********************
 
 //CREATE POST
 app.post("/api/posts/createpost", async (req, res) => {
@@ -239,7 +238,6 @@ app.get("/api/posts/:id", async (req, res) => {
 
 // QUERY -- 
 // /api/posts/?user="john" means fetch all data of john
-// /api/posts/?cat="music" means fetch all data of music category
 
 //GET ALL POSTS 
 app.get("/api/posts", async (req, res) => {
