@@ -69,13 +69,14 @@ app.post('/api/auth/login', async (req, res) => {
         }
 
         //compare entered password with that found user hashed password
-        const passwordCompare = await bcrypt.compare(req.body.password, user.password); //returns true or false
+        const passwordCompare = await bcrypt.compare(req.body.password, user.password); 
+        //returns true or false
         if (!passwordCompare) {
             console.log("Please login with correct credentials");
             return res.status(400).json({success:false,msg:"Please login with correct credentials"});
         }
 
-        // if loged in successfull send user except password
+        // if logged in successfull send user except password
         const { password, ...others } = user._doc;
         res.status(200).json({success:true,user:others});
 
@@ -161,7 +162,8 @@ app.get("/api/users/:id", async (req, res) => {
 });
 
 
-// ********************* CRUD OPERATION ON POST***********************
+
+// ********************* CRUD OPERATION ON POST******************
 
 //CREATE POST
 app.post("/api/posts/createpost", async (req, res) => {
@@ -177,16 +179,18 @@ app.post("/api/posts/createpost", async (req, res) => {
 
 
 //UPDATE POST
-app.put("/api/posts/update/:id", async (req, res) => {
+app.patch("/api/posts/update/:id", async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
+        const data = req.body.data;
         // only current user can change only his post , provide username
-        if (post.username === req.body.username) {
+        if (post.username === data.username) {
+            console.log("INSIDE IF")
             try {
                 const updatedPost = await Post.findByIdAndUpdate(
                     req.params.id,
                     {
-                        $set: req.body,
+                        $set: data,
                     },
                     { new: true }
                 );
@@ -235,9 +239,9 @@ app.get("/api/posts/:id", async (req, res) => {
 });
 
 
-
 // QUERY -- 
 // /api/posts/?user="john" means fetch all data of john
+// /api/posts/?cat="music" means fetch all data of music category
 
 //GET ALL POSTS 
 app.get("/api/posts", async (req, res) => {
